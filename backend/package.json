@@ -16,7 +16,7 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.16.0",
-    "@tsconfig/node23": "^23.0.0",
+    "@tsconfig/node22": "^22.0.0",
     "@types/node": "^22.10.1",
     "eslint": "^9.16.0",
     "pkgroll": "^2.5.1",
