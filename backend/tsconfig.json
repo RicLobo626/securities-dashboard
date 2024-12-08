@@ -6,6 +6,8 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "isolatedModules": true,
-    "types": ["node"]
+    "types": ["node"],
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   }
 }
