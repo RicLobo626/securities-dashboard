@@ -1,0 +1,11 @@
+model Security {
+  id           Int     @id @default(autoincrement())
+  ticker       String  @unique
+  securityName String  @map("security_name")
+  sector       String
+  country      String
+  trend        Float
+  prices       Price[]
+
+  @@map("securities")
+}
