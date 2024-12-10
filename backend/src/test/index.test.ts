@@ -1,25 +1,15 @@
-import { Context, createContext } from "@/context.ts";
-import { schema } from "@/schema.ts";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
 import { prisma } from "@/lib/prisma.ts";
 import request from "supertest";
 import assert from "node:assert";
 import helper from "@/test/testHelper.ts";
+import { stopServer, startServer } from "@/server.ts";
 
 describe("server", () => {
-  let server: ApolloServer<Context>, url: string;
+  let url: string;
 
   before(async () => {
-    server = new ApolloServer<Context>({
-      schema,
-    });
-
-    ({ url } = await startStandaloneServer(server, {
-      listen: { port: 0 },
-      context: createContext,
-    }));
+    ({ url } = await startServer(0));
   });
 
   it("returns empty array when there are no securities stored in db", async () => {
@@ -53,6 +43,6 @@ describe("server", () => {
 
   after(async () => {
     await prisma.$disconnect();
-    await server.stop();
+    await stopServer();
   });
 });
