@@ -4,7 +4,7 @@ const resetDatabase = async () => {
   await prisma.security.deleteMany();
 };
 
-const getSecuritiesInDb = await prisma.security.findMany();
+const getSecuritiesInDb = () => prisma.security.findMany();
 
 const initialSecurities = [
   {
