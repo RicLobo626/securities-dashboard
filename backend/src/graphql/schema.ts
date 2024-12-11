@@ -5,7 +5,7 @@ import { GraphQLScalarType } from "graphql";
 
 const dateScalar = new GraphQLScalarType({
   name: "Date",
-  description: "A custom date scalar that handles Unix timestamps and ISO strings",
+  description: "A custom scalar for Date objects. Serializes Date instances to ISO strings.",
   serialize(val) {
     if (val instanceof Date) {
       return val.toISOString();
