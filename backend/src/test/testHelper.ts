@@ -1,8 +1,7 @@
 import { prisma } from "@/lib/prisma.ts";
+import { v4 as uuid } from "uuid";
 
-const resetDatabase = async () => {
-  await prisma.security.deleteMany();
-};
+const resetDatabase = () => prisma.security.deleteMany();
 
 const getSecuritiesInDb = () => prisma.security.findMany();
 
@@ -23,9 +22,25 @@ const initialSecurities = [
   },
 ];
 
+const getNonExistentId = () => uuid();
+
 const GET_SECURITIES = `
   query Securities {
     securities {
+      id
+      ticker
+      securityName
+      sector
+      country
+      trend
+    }
+  }
+`;
+
+const GET_SECURITY = `
+  query Security($id: ID!) {
+    security(id: $id) {
+      id
       ticker
       securityName
       sector
@@ -37,7 +52,9 @@ const GET_SECURITIES = `
 
 export default {
   GET_SECURITIES,
+  GET_SECURITY,
   resetDatabase,
-  getSecuritiesInDb,
   initialSecurities,
+  getSecuritiesInDb,
+  getNonExistentId,
 };

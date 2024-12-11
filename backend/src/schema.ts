@@ -1,5 +1,6 @@
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { Context } from "@/context.ts";
+import { NotFoundError } from "@/errors/NotFoundError.ts";
 import { GraphQLScalarType } from "graphql";
 
 const dateScalar = new GraphQLScalarType({
@@ -36,6 +37,7 @@ export const typeDefs = `
 
   type Query {
     securities: [Security!]!
+    security(id: ID!): Security
   }
 `;
 
@@ -43,6 +45,19 @@ export const resolvers = {
   Date: dateScalar,
   Query: {
     securities: (_, __, { prisma }: Context) => prisma.security.findMany(),
+
+    security: async (_, { id }, { prisma }: Context) => {
+      const security = await prisma.security.findUnique({
+        where: { id },
+        include: { prices: true },
+      });
+
+      if (!security) {
+        throw new NotFoundError("Security not found");
+      }
+
+      return security;
+    },
   },
 };
 

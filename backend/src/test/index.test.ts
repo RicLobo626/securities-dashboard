@@ -4,6 +4,7 @@ import request from "supertest";
 import assert from "node:assert";
 import helper from "@/test/testHelper.ts";
 import { stopServer, startServer } from "@/server.ts";
+import { NOT_FOUND } from "@/errors/index.ts";
 
 describe("server", () => {
   let url: string;
@@ -31,13 +32,41 @@ describe("server", () => {
     });
 
     it("returns all securities", async () => {
+      const securitiesInDb = await helper.getSecuritiesInDb();
+
       const { body } = await request(url)
         .post("/")
         .send({ query: helper.GET_SECURITIES })
         .expect("Content-Type", /application\/json/);
 
       assert.strictEqual(body.errors, undefined);
-      assert.deepStrictEqual(body.data.securities, helper.initialSecurities);
+      assert.deepStrictEqual(body.data.securities, securitiesInDb);
+    });
+
+    describe("viewing a specific security", () => {
+      it("returns if security exists", async () => {
+        const [securityInDB] = await helper.getSecuritiesInDb();
+
+        const { body } = await request(url)
+          .post("/")
+          .send({ query: helper.GET_SECURITY, variables: { id: securityInDB.id } })
+          .expect("Content-Type", /application\/json/);
+
+        assert.strictEqual(body.errors, undefined);
+        assert.deepStrictEqual(body.data.security, securityInDB);
+      });
+
+      it("fails with the appropriate error code if security does not exist", async () => {
+        const nonExistentId = helper.getNonExistentId();
+
+        const { body } = await request(url)
+          .post("/")
+          .send({ query: helper.GET_SECURITY, variables: { id: nonExistentId } })
+          .expect("Content-Type", /application\/json/);
+
+        assert.notStrictEqual(body.errors, undefined);
+        assert.strictEqual(body.errors[0].extensions.code, NOT_FOUND);
+      });
     });
   });
 
