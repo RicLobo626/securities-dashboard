@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma.ts";
 import request from "supertest";
 import assert from "node:assert";
 import helper from "@/test/testHelper.ts";
-import { stopServer, startServer } from "@/server.ts";
+import { stopServer, startServer } from "@/server/index.ts";
 import { NOT_FOUND } from "@/errors/index.ts";
 
 describe("server", () => {

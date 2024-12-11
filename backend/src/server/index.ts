@@ -1,6 +1,6 @@
-import { Context, createContext } from "@/context.ts";
+import { Context, createContext } from "./context.ts";
 import { ApolloServer } from "@apollo/server";
-import { schema } from "@/schema.ts";
+import { schema } from "@/graphql/schema.ts";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
 export const server = new ApolloServer<Context>({ schema });

@@ -1,5 +1,5 @@
 import { PORT } from "@/config/env.ts";
-import { startServer } from "@/server.ts";
+import { startServer } from "@/server/index.ts";
 
 (async () => {
   const { url } = await startServer(PORT);

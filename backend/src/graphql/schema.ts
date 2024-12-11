@@ -1,5 +1,5 @@
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { Context } from "@/context.ts";
+import { Context } from "@/server/context.ts";
 import { NotFoundError } from "@/errors/NotFoundError.ts";
 import { GraphQLScalarType } from "graphql";
 
