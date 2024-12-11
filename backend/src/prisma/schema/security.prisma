@@ -1,5 +1,5 @@
 model Security {
-  id           Int     @id @default(autoincrement())
+  id           String  @id @default(uuid())
   ticker       String  @unique
   securityName String  @map("security_name")
   sector       String

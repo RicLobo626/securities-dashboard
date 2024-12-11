@@ -1,10 +1,10 @@
 model Price {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   date       DateTime
   close      Float
   volume     Int
   security   Security @relation(fields: [securityId], references: [id])
-  securityId Int      @map("security_id")
+  securityId String   @map("security_id")
 
   @@unique([securityId, date])
   @@map("prices")
