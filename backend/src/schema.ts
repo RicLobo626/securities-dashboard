@@ -1,7 +1,22 @@
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { Context } from "@/context.ts";
+import { GraphQLScalarType } from "graphql";
+
+const dateScalar = new GraphQLScalarType({
+  name: "Date",
+  description: "A custom date scalar that handles Unix timestamps and ISO strings",
+  serialize(val) {
+    if (val instanceof Date) {
+      return val.toISOString();
+    }
+
+    throw new Error(`Date Scalar serializer expected a 'Date' object, got ${typeof val} instead`);
+  },
+});
 
 export const typeDefs = `
+  scalar Date
+
   type Security {
     id: ID!
     ticker: String!
@@ -14,7 +29,7 @@ export const typeDefs = `
 
   type Price {
     id: ID!
-    date: String!
+    date: Date!
     close: Float!
     volume: Int!
   }
@@ -25,10 +40,9 @@ export const typeDefs = `
 `;
 
 export const resolvers = {
+  Date: dateScalar,
   Query: {
-    securities: async (_, __, { prisma }: Context) => {
-      return await prisma.security.findMany();
-    },
+    securities: (_, __, { prisma }: Context) => prisma.security.findMany(),
   },
 };
 
