@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma.ts";
 import securities from "./data.json";
 
 const seed = async () => {
+  await prisma.security.deleteMany({});
+
   for (const { prices, ...security } of securities) {
     const transformedPrices = prices.map((p) => ({
       close: parseFloat(p.close),
