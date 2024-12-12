@@ -7,9 +7,16 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
+    background: {
+      default: "#aec1c2",
+    },
     primary: {
       main: "#003134",
       contrastText: "#aec1c2",
+    },
+    secondary: {
+      main: "#aec1c2",
+      contrastText: "#003134",
     },
   },
 });
@@ -29,8 +36,8 @@ if (!rootElement.innerHTML) {
 
   root.render(
     <StrictMode>
-      <CssBaseline />
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <RouterProvider router={router} />
       </ThemeProvider>
     </StrictMode>
