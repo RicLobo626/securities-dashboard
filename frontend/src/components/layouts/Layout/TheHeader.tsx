@@ -46,7 +46,7 @@ export const TheHeader = () => {
               textDecoration: "none",
             }}
           >
-            Full Stack
+            Securities
           </Typography>
 
           <Box component="nav" sx={{ display: { xs: "none", sm: "flex", marginLeft: "auto" } }}>
