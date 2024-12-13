@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 const theme = createTheme({
   palette: {
@@ -21,6 +22,11 @@ const theme = createTheme({
   },
 });
 
+const client = new ApolloClient({
+  uri: import.meta.env.VITE_API_URI,
+  cache: new InMemoryCache(),
+});
+
 const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {
@@ -33,7 +39,6 @@ const rootElement = document.getElementById("root")!;
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-
   const globalStyles = (
     <GlobalStyles
       styles={{
@@ -46,11 +51,13 @@ if (!rootElement.innerHTML) {
 
   root.render(
     <StrictMode>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {globalStyles}
-        <RouterProvider router={router} />
-      </ThemeProvider>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {globalStyles}
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </ApolloProvider>
     </StrictMode>
   );
 }
