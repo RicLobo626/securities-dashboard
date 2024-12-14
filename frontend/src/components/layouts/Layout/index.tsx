@@ -1,7 +1,7 @@
 import { Box, Container } from "@mui/material";
 import { TheHeader } from "./TheHeader";
 import { Outlet, CatchBoundary } from "@tanstack/react-router";
-import { ErrorFallback } from "@/components/errors/ErrorFallback";
+import { ErrorFallback } from "@/components/errors";
 import { useState } from "react";
 
 export const Layout = () => {
