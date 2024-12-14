@@ -1,10 +1,10 @@
-import { defineConfig } from "vite";
+import { defineConfig, mergeConfig } from "vite";
+import { defineConfig as defineVitestConfig } from "vitest/config";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// https://vite.dev/config/
-export default defineConfig({
+const viteConfig = defineConfig({
   plugins: [TanStackRouterVite(), react()],
   resolve: {
     alias: {
@@ -12,3 +12,13 @@ export default defineConfig({
     },
   },
 });
+
+const vitestConfig = defineVitestConfig({
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/testSetup.ts",
+  },
+});
+
+export default mergeConfig(viteConfig, vitestConfig);
