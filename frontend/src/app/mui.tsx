@@ -1,5 +1,5 @@
 import { createTheme } from "@mui/material/styles";
-import { GlobalStyles, ThemeProvider } from "@mui/material";
+import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
 import { ReactNode } from "react";
 
 const theme = createTheme({
@@ -18,7 +18,7 @@ const theme = createTheme({
   },
 });
 
-export const globalStyles = (
+const globalStyles = (
   <GlobalStyles
     styles={{
       html: { height: "100%" },
@@ -33,5 +33,11 @@ type Props = {
 };
 
 export const AppThemeProvider = ({ children }: Props) => {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {globalStyles}
+      {children}
+    </ThemeProvider>
+  );
 };

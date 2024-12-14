@@ -1,6 +1,5 @@
 import { ApolloClientProvider } from "@/app/apollo";
-import { AppThemeProvider, globalStyles } from "@/app/mui";
-import { CssBaseline } from "@mui/material";
+import { AppThemeProvider } from "@/app/mui";
 import { ReactNode } from "react";
 
 type Props = {
@@ -10,11 +9,7 @@ type Props = {
 export const Providers = ({ children }: Props) => {
   return (
     <ApolloClientProvider>
-      <AppThemeProvider>
-        <CssBaseline />
-        {globalStyles}
-        {children}
-      </AppThemeProvider>
+      <AppThemeProvider>{children}</AppThemeProvider>
     </ApolloClientProvider>
   );
 };
