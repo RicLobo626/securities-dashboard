@@ -49,7 +49,7 @@ describe("server", () => {
 
         const { body } = await request(url)
           .post("/")
-          .send({ query: helper.GET_SECURITY, variables: { id: securityInDB.id } })
+          .send({ query: helper.GET_SECURITY, variables: { ticker: securityInDB.ticker } })
           .expect("Content-Type", /application\/json/);
 
         assert.strictEqual(body.errors, undefined);
@@ -57,11 +57,11 @@ describe("server", () => {
       });
 
       it("fails with the appropriate error code if security does not exist", async () => {
-        const nonExistentId = helper.getNonExistentId();
+        const nonExistentTicker = helper.getNonExistentTicker();
 
         const { body } = await request(url)
           .post("/")
-          .send({ query: helper.GET_SECURITY, variables: { id: nonExistentId } })
+          .send({ query: helper.GET_SECURITY, variables: { ticker: nonExistentTicker } })
           .expect("Content-Type", /application\/json/);
 
         assert.notStrictEqual(body.errors, undefined);

@@ -37,7 +37,7 @@ export const typeDefs = `
 
   type Query {
     securities: [Security!]!
-    security(id: ID!): Security
+    security(ticker: String!): Security
   }
 `;
 
@@ -46,9 +46,9 @@ export const resolvers = {
   Query: {
     securities: (_, __, { prisma }: Context) => prisma.security.findMany(),
 
-    security: async (_, { id }, { prisma }: Context) => {
+    security: async (_, { ticker }, { prisma }: Context) => {
       const security = await prisma.security.findUnique({
-        where: { id },
+        where: { ticker },
         include: { prices: true },
       });
 
