@@ -49,53 +49,67 @@ export const TheHeader = () => {
             Securities
           </Typography>
 
-          <Box component="nav" sx={{ display: { xs: "none", sm: "flex", marginLeft: "auto" } }}>
+          <Box
+            component="nav"
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "space-between", sm: "flex-end" },
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
             {pages.map((page) => (
-              <Button component={Link} key={page.text} to={page.to} color="inherit">
+              <Button
+                component={Link}
+                key={page.text}
+                to={page.to}
+                color="inherit"
+                sx={{ display: { xs: "none", sm: "flex", marginLeft: "auto" } }}
+              >
                 {page.text}
               </Button>
             ))}
-          </Box>
 
-          <Box sx={{ display: { xs: "flex", sm: "none", marginLeft: "auto" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
+            <Box sx={{ display: { xs: "flex", sm: "none", marginLeft: "auto" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
 
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              keepMounted
-            >
-              {pages.map((page) => (
-                <MenuItem
-                  component={Link}
-                  to={page.to}
-                  color="inherit"
-                  key={page.text}
-                  onClick={handleCloseNavMenu}
-                >
-                  {page.text}
-                </MenuItem>
-              ))}
-            </Menu>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                keepMounted
+              >
+                {pages.map((page) => (
+                  <MenuItem
+                    component={Link}
+                    to={page.to}
+                    color="inherit"
+                    key={page.text}
+                    onClick={handleCloseNavMenu}
+                  >
+                    {page.text}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           </Box>
         </Toolbar>
       </Container>
