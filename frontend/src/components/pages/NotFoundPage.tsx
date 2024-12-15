@@ -2,7 +2,15 @@ import { Home, SentimentVeryDissatisfied } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 
-export const NotFoundPage = () => {
+type Props = {
+  title?: string;
+  text?: string;
+};
+
+export const NotFoundPage = ({
+  title = "404 Not found",
+  text = "The page you are looking for does not exist.",
+}: Props) => {
   return (
     <Box
       sx={{
@@ -18,14 +26,14 @@ export const NotFoundPage = () => {
         sx={{
           fontSize: {
             xs: "1.6rem",
-            sm: "3rem",
+            sm: "2.4rem",
           },
           fontWeight: "bold",
           textAlign: "center",
           color: "primary.main",
         }}
       >
-        404 Not Found
+        {title}
       </Typography>
 
       <Typography
@@ -42,7 +50,7 @@ export const NotFoundPage = () => {
           gap: "1rem",
         }}
       >
-        The page you are looking for does not exist.{" "}
+        {text}
         <SentimentVeryDissatisfied fontSize="large" aria-hidden="true" />
       </Typography>
 
