@@ -19,6 +19,7 @@ export const Layout = () => {
       <Container
         sx={{ padding: { xs: "0.4rem", sm: "1rem", md: "2rem" }, flex: "1 1 100%" }}
         maxWidth="lg"
+        component="main"
         disableGutters
       >
         <CatchBoundary
