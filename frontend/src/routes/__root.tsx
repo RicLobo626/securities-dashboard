@@ -1,8 +1,9 @@
+import { RouterContext } from "@/app/router";
 import { Layout } from "@/components/layouts";
 import { NotFoundPage } from "@/components/pages";
-import { createRootRoute } from "@tanstack/react-router";
+import { createRootRouteWithContext } from "@tanstack/react-router";
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: Layout,
   notFoundComponent: NotFoundPage,
 });
