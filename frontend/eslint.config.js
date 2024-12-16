@@ -20,13 +20,16 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      "no-unused-vars": {
-        vars: "all",
-        args: "after-used",
-        ignoreRestSiblings: false,
-        varsIgnorePattern: "^_",
-        argsIgnorePattern: "^_",
-      },
+      "no-unused-vars": [
+        "error",
+        {
+          vars: "all",
+          args: "after-used",
+          ignoreRestSiblings: false,
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+        },
+      ],
     },
   }
 );
