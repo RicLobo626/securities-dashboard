@@ -55,7 +55,7 @@ export const TheHeader = () => {
               display: "flex",
               justifyContent: { xs: "space-between", sm: "flex-end" },
               alignItems: "center",
-              width: "100%",
+              marginLeft: "auto",
             }}
           >
             {pages.map((page) => (
