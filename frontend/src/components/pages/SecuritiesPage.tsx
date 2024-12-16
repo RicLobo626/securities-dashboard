@@ -4,6 +4,7 @@ import { Security } from "@/types/securities";
 import { SecuritiesTable } from "@/components/features";
 import { Alert, Button } from "@mui/material";
 import { Refresh } from "@mui/icons-material";
+import { useNavigate } from "@tanstack/react-router";
 
 type QueryData = {
   securities: Security[];
@@ -11,12 +12,13 @@ type QueryData = {
 
 export const SecuritiesPage = () => {
   const { data, loading, error, refetch } = useQuery<QueryData>(GET_SECURITIES);
-
-  const handleRetry = () => refetch();
+  const navigate = useNavigate();
 
   if (loading || !data) {
     return <SecuritiesTable loading />;
   }
+
+  const handleRetry = () => refetch();
 
   if (error) {
     return (
@@ -42,5 +44,9 @@ export const SecuritiesPage = () => {
     );
   }
 
-  return <SecuritiesTable securities={data.securities} />;
+  const handleRowClick = (security: Security) => {
+    navigate({ to: `/securities/${security.ticker}` });
+  };
+
+  return <SecuritiesTable onRowClick={handleRowClick} securities={data.securities} />;
 };

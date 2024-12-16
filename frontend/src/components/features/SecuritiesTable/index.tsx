@@ -1,6 +1,7 @@
 import { Security } from "@/types/securities";
 import { TableBodyLoader } from "@/components/ui/TableBodyLoader";
 import { getTrendColor, getPercentage } from "@/utils";
+import { Link } from "@tanstack/react-router";
 import Paper from "@mui/material/Paper";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -9,8 +10,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { TableCellProps } from "@mui/material/TableCell";
 import IconButton from "@mui/material/IconButton";
-import { Visibility } from "@mui/icons-material";
-import { Link, useNavigate } from "@tanstack/react-router";
+import Visibility from "@mui/icons-material/Visibility";
 
 /** HEAD **/
 
@@ -46,13 +46,13 @@ export const SecuritiesTableHead = ({ headers }: SecuritiesTableHeadProps) => {
 
 type SecuritiesTableBodyProps = {
   securities: Security[];
+  onRowClick?: (security: Security) => void;
 };
 
-const SecuritiesTableBody = ({ securities }: SecuritiesTableBodyProps) => {
-  const navigate = useNavigate();
-
+const SecuritiesTableBody = ({ onRowClick, securities }: SecuritiesTableBodyProps) => {
   const handleRowClick = (security: Security) => () => {
-    navigate({ to: `/securities/${security.ticker}` });
+    if (!onRowClick) return;
+    onRowClick(security);
   };
 
   return (
@@ -71,8 +71,8 @@ const SecuritiesTableBody = ({ securities }: SecuritiesTableBodyProps) => {
         >
           <TableCell>
             <IconButton
-              onClick={(e) => e.stopPropagation()}
               component={Link}
+              onClick={(e) => e.stopPropagation()}
               to={`/securities/${security.ticker}`}
               aria-label="View security details"
             >
@@ -101,11 +101,17 @@ const SecuritiesTableBody = ({ securities }: SecuritiesTableBodyProps) => {
 
 /** TABLE **/
 
-type LoadingProps = { loading: true; securities?: never };
-type SecuritiesProps = { securities: Security[]; loading?: false };
+type LoadingProps = { loading: true; securities?: never; onRowClick?: never };
+
+type SecuritiesProps = {
+  securities: Security[];
+  loading?: false;
+  onRowClick?: (security: Security) => void;
+};
+
 type SecurityTableProps = LoadingProps | SecuritiesProps;
 
-export const SecuritiesTable = ({ securities, loading }: SecurityTableProps) => {
+export const SecuritiesTable = ({ onRowClick, securities, loading }: SecurityTableProps) => {
   const headers: Header[] = [
     { title: "" },
     { title: "Symbol" },
@@ -121,7 +127,8 @@ export const SecuritiesTable = ({ securities, loading }: SecurityTableProps) => 
         <SecuritiesTableHead headers={headers} />
 
         {loading && <TableBodyLoader colCount={headers.length} />}
-        {securities && <SecuritiesTableBody securities={securities} />}
+
+        {securities && <SecuritiesTableBody onRowClick={onRowClick} securities={securities} />}
       </Table>
     </TableContainer>
   );
