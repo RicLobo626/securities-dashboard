@@ -1,6 +1,7 @@
 import { screen, render } from "@testing-library/react";
 import { SecuritiesTable } from ".";
 import { getPercentage, getTrendColor } from "@/utils";
+import { vi } from "vitest";
 
 const mockSecurities = [
   {
@@ -31,6 +32,12 @@ const mockSecurities = [
 
 describe("securities table component", () => {
   beforeEach(() => {
+    vi.mock("@tanstack/react-router", async (importOriginal) => {
+      await importOriginal();
+
+      return { Link: "a" };
+    });
+
     render(<SecuritiesTable securities={mockSecurities} />);
   });
 
@@ -38,7 +45,7 @@ describe("securities table component", () => {
     expect(screen.getByRole("table", { name: "securities table" })).toBeInTheDocument();
 
     const headers = screen.getAllByRole("columnheader");
-    const headerNames = ["Symbol", "Name", "Sector", "Country", "Trend"];
+    const headerNames = ["", "Symbol", "Name", "Sector", "Country", "Trend"];
 
     expect(headers).toHaveLength(headerNames.length);
     expect(headers.map((header) => header.textContent)).toStrictEqual(headerNames);
@@ -52,7 +59,7 @@ describe("securities table component", () => {
     rows.forEach((row, idx) => {
       const security = mockSecurities[idx];
 
-      const [ticker, name, sector, country, trend] = row.children;
+      const [, ticker, name, sector, country, trend] = row.children;
 
       expect(ticker).toHaveTextContent(security.ticker);
       expect(name).toHaveTextContent(security.securityName);
