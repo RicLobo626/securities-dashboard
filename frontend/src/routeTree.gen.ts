@@ -11,20 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SecuritiesImport } from './routes/securities'
 import { Route as IndexImport } from './routes/index'
+import { Route as SecuritiesIndexImport } from './routes/securities/index'
+import { Route as SecuritiesTickerImport } from './routes/securities/$ticker'
 
 // Create/Update Routes
-
-const SecuritiesRoute = SecuritiesImport.update({
-  id: '/securities',
-  path: '/securities',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SecuritiesIndexRoute = SecuritiesIndexImport.update({
+  id: '/securities/',
+  path: '/securities/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SecuritiesTickerRoute = SecuritiesTickerImport.update({
+  id: '/securities/$ticker',
+  path: '/securities/$ticker',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +46,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/securities': {
-      id: '/securities'
+    '/securities/$ticker': {
+      id: '/securities/$ticker'
+      path: '/securities/$ticker'
+      fullPath: '/securities/$ticker'
+      preLoaderRoute: typeof SecuritiesTickerImport
+      parentRoute: typeof rootRoute
+    }
+    '/securities/': {
+      id: '/securities/'
       path: '/securities'
       fullPath: '/securities'
-      preLoaderRoute: typeof SecuritiesImport
+      preLoaderRoute: typeof SecuritiesIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +67,42 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/securities': typeof SecuritiesRoute
+  '/securities/$ticker': typeof SecuritiesTickerRoute
+  '/securities': typeof SecuritiesIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/securities': typeof SecuritiesRoute
+  '/securities/$ticker': typeof SecuritiesTickerRoute
+  '/securities': typeof SecuritiesIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/securities': typeof SecuritiesRoute
+  '/securities/$ticker': typeof SecuritiesTickerRoute
+  '/securities/': typeof SecuritiesIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/securities'
+  fullPaths: '/' | '/securities/$ticker' | '/securities'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/securities'
-  id: '__root__' | '/' | '/securities'
+  to: '/' | '/securities/$ticker' | '/securities'
+  id: '__root__' | '/' | '/securities/$ticker' | '/securities/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SecuritiesRoute: typeof SecuritiesRoute
+  SecuritiesTickerRoute: typeof SecuritiesTickerRoute
+  SecuritiesIndexRoute: typeof SecuritiesIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SecuritiesRoute: SecuritiesRoute,
+  SecuritiesTickerRoute: SecuritiesTickerRoute,
+  SecuritiesIndexRoute: SecuritiesIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +116,18 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/securities"
+        "/securities/$ticker",
+        "/securities/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/securities": {
-      "filePath": "securities.tsx"
+    "/securities/$ticker": {
+      "filePath": "securities/$ticker.tsx"
+    },
+    "/securities/": {
+      "filePath": "securities/index.tsx"
     }
   }
 }

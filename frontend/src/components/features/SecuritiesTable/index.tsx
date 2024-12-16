@@ -8,6 +8,9 @@ import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { TableCellProps } from "@mui/material/TableCell";
+import IconButton from "@mui/material/IconButton";
+import { Visibility } from "@mui/icons-material";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 /** HEAD **/
 
@@ -46,10 +49,37 @@ type SecuritiesTableBodyProps = {
 };
 
 const SecuritiesTableBody = ({ securities }: SecuritiesTableBodyProps) => {
+  const navigate = useNavigate();
+
+  const handleRowClick = (security: Security) => () => {
+    navigate({ to: `/securities/${security.ticker}` });
+  };
+
   return (
     <TableBody sx={{ borderColor: "primary.main" }}>
       {securities.map((security) => (
-        <TableRow key={security.id}>
+        <TableRow
+          onClick={handleRowClick(security)}
+          key={security.id}
+          sx={{
+            transition: "background-color 0.3s",
+            "&:hover": {
+              cursor: "pointer",
+              backgroundColor: "#f1f5f9",
+            },
+          }}
+        >
+          <TableCell>
+            <IconButton
+              onClick={(e) => e.stopPropagation()}
+              component={Link}
+              to={`/securities/${security.ticker}`}
+              aria-label="View security details"
+            >
+              <Visibility sx={{ color: "primary.main" }} />
+            </IconButton>
+          </TableCell>
+
           <TableCell>{security.ticker}</TableCell>
           <TableCell>{security.securityName}</TableCell>
           <TableCell>{security.sector}</TableCell>
@@ -77,6 +107,7 @@ type SecurityTableProps = LoadingProps | SecuritiesProps;
 
 export const SecuritiesTable = ({ securities, loading }: SecurityTableProps) => {
   const headers: Header[] = [
+    { title: "" },
     { title: "Symbol" },
     { title: "Name" },
     { title: "Sector" },
