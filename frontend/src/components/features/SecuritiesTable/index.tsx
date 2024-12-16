@@ -11,6 +11,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { TableCellProps } from "@mui/material/TableCell";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
+import { TableBodyNoData } from "@/components/ui";
 
 /** HEAD **/
 
@@ -128,7 +129,11 @@ export const SecuritiesTable = ({ onRowClick, securities, loading }: SecurityTab
 
         {loading && <TableBodyLoader colCount={headers.length} />}
 
-        {securities && <SecuritiesTableBody onRowClick={onRowClick} securities={securities} />}
+        {securities && securities.length === 0 && <TableBodyNoData colCount={headers.length} />}
+
+        {securities && securities.length > 0 && (
+          <SecuritiesTableBody onRowClick={onRowClick} securities={securities} />
+        )}
       </Table>
     </TableContainer>
   );

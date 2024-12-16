@@ -31,55 +31,71 @@ const mockSecurities = [
 ];
 
 describe("securities table component", () => {
-  beforeEach(() => {
+  beforeAll(() => {
     vi.mock("@tanstack/react-router", async (importOriginal) => {
       await importOriginal();
 
       return { Link: "a" };
     });
-
-    render(<SecuritiesTable securities={mockSecurities} />);
   });
 
-  it("renders table correctly", () => {
-    expect(screen.getByRole("table", { name: "securities table" })).toBeInTheDocument();
+  describe("when no securities are provided", () => {
+    beforeEach(() => {
+      render(<SecuritiesTable securities={[]} />);
 
-    const headers = screen.getAllByRole("columnheader");
-    const headerNames = ["", "Symbol", "Name", "Sector", "Country", "Trend"];
+      screen.debug();
+    });
 
-    expect(headers).toHaveLength(headerNames.length);
-    expect(headers.map((header) => header.textContent)).toStrictEqual(headerNames);
-  });
-
-  it("renders data correctly", () => {
-    const [_headerRow, ...rows] = screen.getAllByRole("row");
-
-    expect(rows).toHaveLength(mockSecurities.length);
-
-    rows.forEach((row, idx) => {
-      const security = mockSecurities[idx];
-
-      const [, ticker, name, sector, country, trend] = row.children;
-
-      expect(ticker).toHaveTextContent(security.ticker);
-      expect(name).toHaveTextContent(security.securityName);
-      expect(sector).toHaveTextContent(security.sector);
-      expect(country).toHaveTextContent(security.country);
-      expect(trend).toHaveTextContent(getPercentage(security.trend));
+    it("renders appropriate message", () => {
+      expect(screen.getByText(/no data available/i)).toBeInTheDocument();
     });
   });
 
-  it("renders trend color correctly", () => {
-    const headers = screen.getAllByRole("columnheader");
-    const trendIdx = headers.findIndex((header) => header.textContent === "Trend");
+  describe("when securities are provided", () => {
+    beforeEach(() => {
+      render(<SecuritiesTable securities={mockSecurities} />);
+    });
 
-    const [_headerRow, ...rows] = screen.getAllByRole("row");
+    it("renders table correctly", () => {
+      expect(screen.getByRole("table", { name: "securities table" })).toBeInTheDocument();
 
-    rows.forEach((row, idx) => {
-      const { trend } = mockSecurities[idx];
-      const trendCell = row.children[trendIdx];
+      const headers = screen.getAllByRole("columnheader");
+      const headerNames = ["", "Symbol", "Name", "Sector", "Country", "Trend"];
 
-      expect(trendCell).toHaveStyle({ backgroundColor: getTrendColor(trend) });
+      expect(headers).toHaveLength(headerNames.length);
+      expect(headers.map((header) => header.textContent)).toStrictEqual(headerNames);
+    });
+
+    it("renders data correctly", () => {
+      const [_headerRow, ...rows] = screen.getAllByRole("row");
+
+      expect(rows).toHaveLength(mockSecurities.length);
+
+      rows.forEach((row, idx) => {
+        const security = mockSecurities[idx];
+
+        const [, ticker, name, sector, country, trend] = row.children;
+
+        expect(ticker).toHaveTextContent(security.ticker);
+        expect(name).toHaveTextContent(security.securityName);
+        expect(sector).toHaveTextContent(security.sector);
+        expect(country).toHaveTextContent(security.country);
+        expect(trend).toHaveTextContent(getPercentage(security.trend));
+      });
+    });
+
+    it("renders trend color correctly", () => {
+      const headers = screen.getAllByRole("columnheader");
+      const trendIdx = headers.findIndex((header) => header.textContent === "Trend");
+
+      const [_headerRow, ...rows] = screen.getAllByRole("row");
+
+      rows.forEach((row, idx) => {
+        const { trend } = mockSecurities[idx];
+        const trendCell = row.children[trendIdx];
+
+        expect(trendCell).toHaveStyle({ backgroundColor: getTrendColor(trend) });
+      });
     });
   });
 });
