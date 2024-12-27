@@ -47,7 +47,7 @@ export const SecuritiesTableHead = ({ headers }: SecuritiesTableHeadProps) => {
 
 type SecuritiesTableBodyProps = {
   securities: Security[];
-  onRowClick?: (security: Security) => void;
+  onRowClick?: (_security: Security) => void;
 };
 
 const SecuritiesTableBody = ({ onRowClick, securities }: SecuritiesTableBodyProps) => {
@@ -107,7 +107,7 @@ type LoadingProps = { loading: true; securities?: never; onRowClick?: never };
 type SecuritiesProps = {
   securities: Security[];
   loading?: false;
-  onRowClick?: (security: Security) => void;
+  onRowClick?: (_security: Security) => void;
 };
 
 type SecurityTableProps = LoadingProps | SecuritiesProps;

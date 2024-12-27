@@ -12,7 +12,7 @@ export const Route = createFileRoute("/securities/$ticker")({
       });
 
       return data.security;
-    } catch (error) {
+    } catch {
       throw notFound();
     }
   },

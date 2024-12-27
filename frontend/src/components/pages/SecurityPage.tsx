@@ -6,13 +6,14 @@ import Box from "@mui/material/Box";
 import * as Highcharts from "highcharts";
 import { useLoaderData } from "@tanstack/react-router";
 import { HighchartsReact } from "highcharts-react-official";
+import { Price } from "@/types/securities";
 
 export const SecurityPage = () => {
   const security = useLoaderData({ from: `/securities/$ticker` });
 
-  const priceData = security.prices.map((entry: any) => [entry.date, entry.close]);
+  const priceData = security.prices.map((entry: Price) => [entry.date, entry.close]);
 
-  const volumeData = security.prices.map((entry: any) => {
+  const volumeData = security.prices.map((entry: Price) => {
     const volumeMillions = entry.volume / 1000000;
     const fixedVolume = Math.round(volumeMillions * 100) / 100;
 
